@@ -19,4 +19,5 @@ if __name__ == '__main__':
 
     app = ApplicationBuilder().token(TOKEN).build()
     app.add_handler(CommandHandler("start", start))
-    app.run_polling()
+    # Eskirgan getUpdates’larni tashlab, conflict xatosini bartaraf etamiz
+    app.run_polling(drop_pending_updates=True)
