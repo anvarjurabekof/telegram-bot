@@ -1,0 +1,11 @@
+services:
+  - type: worker
+    name: telegram-bot
+    runtime: python
+    repo: https://github.com/anvarjurabekof/telegram-bot
+    plan: free
+    buildCommand: ""
+    startCommand: python main.py
+    envVars:
+      - key: BOT_TOKEN
+        sync: false
