@@ -1,5 +1,6 @@
 from telegram import Update, ReplyKeyboardMarkup
-from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
+from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes
+import os
 
 # /start komandasi
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -10,11 +11,20 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply_markup=reply_markup
     )
 
-if __name__ == '__main__':
-    import os
-    TOKEN = os.environ.get("BOT_TOKEN")
+# Til tanlash funksiyasi
+async def choose_language(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    text = update.message.text
+    if text == "🇺🇿 O‘zbek":
+        await update.message.reply_text("Siz O‘zbek tilini tanladingiz.")
+    elif text == "🇷🇺 Русский":
+        await update.message.reply_text("Вы выбрали русский язык.")
 
+# Botni ishga tushirish
+if __name__ == '__main__':
+    TOKEN = os.environ.get("BOT_TOKEN")
     app = ApplicationBuilder().token(TOKEN).build()
+
     app.add_handler(CommandHandler("start", start))
-    # Faqat polling, eskirgan updates’larni tashlab ketadi
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, choose_language))
+
     app.run_polling(drop_pending_updates=True)
